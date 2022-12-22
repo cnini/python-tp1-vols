@@ -23,7 +23,7 @@ class FlightMap:
                 
                 airport.name = row[0]
                 
-                # Retirer les guillemets et les espaces au début et à la fin d'une chaîne
+                # Retirer les guillemets et les espaces au début et à la fin de la chaîne.
                 airport.code = eval(row[1]).split()[0]
                 
                 # Ajouter l'objet Airport créé en amont dans la liste des aéroports.
@@ -59,8 +59,10 @@ class FlightMap:
                 
                 flight.src_code = row[0]
                 
+                # Retirer les guillemets et les espaces au début et à la fin de la chaîne.
                 flight.dst_code = eval(row[1]).split()[0]
                 
+                # Retirer les espaces au début et à la fin de la chaîne.
                 flight.duration = row[2].split()[0]
                 
                 self.list_flights.append(flight)
@@ -81,15 +83,36 @@ class FlightMap:
         Retourne True s'il existe un vol direct entre l'aéroport de départ et l'aéroport d'arrivé, sinon cela retourne False.
         '''
         
+        # Filtre la liste des vols en fonction du code de l'aéroport de départ et du code de l'aéroport d'arrivé, tous deux passés en paramètre.
         exists_flight = [flight for flight in self.flights() if flight.src_code == src_airport_code and flight.dst_code == dst_airport_code]
         
         return True if len(exists_flight) > 0 else False
     
     def flights_where(self, airport_code: str) -> List[Flight]:
         '''
-        Retourne les vols directs vers l'aéroport dont le code est passé en paramètre.
+        Retourne les vols directs vers l'aéroport dont le code (dst_code) est passé en paramètre.
         '''
+        
+        # Récupération des vols dont le code de l'aéroport d'arrivé est identique au code passé en paramètre.
         direct_flights = [flight for flight in self.flights() if flight.dst_code == airport_code]
         
         return direct_flights if len(direct_flights) > 0 else []
+    
+    def airports_from(self, airport_code: str) -> List[Airport]:
+        '''
+        Retourne les aéroports d'arrivés dont le code de l'aéroport de départ (src_code) est passé en paramètre. Cela ne renvoie pas une liste de vols depuis l'aéroport de départ.
+        '''
+        
+        # Récupération des vols dont le code de l'aéroport de départ est identique au code passé en paramètre.
+        src_flights = [flight for flight in self.flights() if flight.src_code == airport_code]
+        
+        list_dst_airports = []
+        
+        for flight in src_flights:
+            for airport in self.airports():
+                # Si le code de l'aéroport d'arrivé du vol courant est identique au code de l'aéroport courant, on ajoute l'aéroport dans la liste.
+                if flight.dst_code == airport.code:
+                    list_dst_airports.append(airport)
+        
+        return list_dst_airports
     
