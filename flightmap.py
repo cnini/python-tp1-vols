@@ -37,6 +37,16 @@ class FlightMap:
         '''
         return self.list_airports
     
+    def airport_find(self, airport_code: str) -> Airport:
+        '''
+        Retourne un objet de type Airport en fonction du code passé en paramètre. S'il n'existe pas, la méthode retourne None.
+        '''
+        
+        # Filtre la liste des aéroports en fonction du code de l'aéroport.
+        airports_filtered = list(filter(lambda airport: airport.code == airport_code, self.airports()))
+        
+        return airports_filtered[0] if len(airports_filtered) > 0 else None
+    
     def import_flights(self, csv_file: str) -> None:
         '''
         Charge le contenu du fichier CSV passé en paramètre, sous forme d'une collection de Flight correctement initialisée.
