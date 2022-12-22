@@ -42,7 +42,7 @@ class FlightMap:
         Retourne un objet de type Airport en fonction du code passé en paramètre. S'il n'existe pas, la méthode retourne None.
         '''
         
-        # Filtre la liste des aéroports en fonction du code de l'aéroport.
+        # Filtre la liste des aéroports en fonction du code passé en paramètre.
         airports_filtered = list(filter(lambda airport: airport.code == airport_code, self.airports()))
         
         return airports_filtered[0] if len(airports_filtered) > 0 else None
@@ -66,7 +66,7 @@ class FlightMap:
                 self.list_flights.append(flight)
                 
             # Supprime les doublons
-            self.list_flights = set(self.list_flights)
+            self.list_flights = list(set(self.list_flights))
                 
         return None
     
@@ -75,4 +75,13 @@ class FlightMap:
         Retourne la liste complète des vols.
         '''
         return self.list_flights
+    
+    def flight_exist(self, src_airport_code: str, dst_airport_code: str) -> bool:
+        '''
+        Retourne True s'il existe un vol direct entre l'aéroport de départ et l'aéroport d'arrivé, sinon cela retourne False.
+        '''
+        
+        exists_flight = [flight for flight in self.flights() if flight.src_code == src_airport_code and flight.dst_code == dst_airport_code]
+        
+        return True if len(exists_flight) > 0 else False
     
