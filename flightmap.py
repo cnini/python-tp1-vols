@@ -9,6 +9,9 @@ class FlightMap:
         return None
     
     def import_airports(self, csv_file: str) -> None:
+        '''
+        Charge le contenu du fichier CSV passé en paramètre, sous forme d'une collection de Airport correctement initialisée.
+        '''
         with open(csv_file, newline='') as csvfile:
             content = csv.reader(csvfile)
             
@@ -22,4 +25,9 @@ class FlightMap:
         return None
 
     def airports(self) -> List[Airport]:
+        '''
+        Retourne la liste des aéroports.
+        '''
         return self.list_airports
+    
+    
