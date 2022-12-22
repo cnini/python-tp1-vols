@@ -85,3 +85,11 @@ class FlightMap:
         
         return True if len(exists_flight) > 0 else False
     
+    def flights_where(self, airport_code: str) -> List[Flight]:
+        '''
+        Retourne les vols directs vers l'aéroport dont le code est passé en paramètre.
+        '''
+        direct_flights = [flight for flight in self.flights() if flight.dst_code == airport_code]
+        
+        return direct_flights if len(direct_flights) > 0 else []
+    
