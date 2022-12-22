@@ -54,6 +54,8 @@ class FlightMap:
         with open(csv_file, newline='') as csvfile:
             content = csv.reader(csvfile)
             
+            temp_list_flights = []
+            
             for row in content:
                 flight = Flight()
                 
@@ -65,10 +67,14 @@ class FlightMap:
                 # Retirer les espaces au début et à la fin de la chaîne.
                 flight.duration = row[2].split()[0]
                 
-                self.list_flights.append(flight)
+                temp_list_flights.append(flight)
                 
             # Supprime les doublons
-            self.list_flights = list(set(self.list_flights))
+            unique_flight = list(set(temp_list_flights))
+            
+            for flight in unique_flight:
+                if not self.flight_exist(flight.dst_code, flight.src_code):
+                    self.list_flights.append(flight)
                 
         return None
     
